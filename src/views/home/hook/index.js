@@ -12,8 +12,16 @@ const useHome = () => {
   const [saturdayItems, setSaturdayItems] = useState([]);
   const [sundayItems, setSundayItems] = useState([]);
 
-  const addItemToDay = itemsSetter => item => {
-    itemsSetter(items => [...items, item]);
+  const editItemOnDay = itemsSetter => (item, index) => {
+    itemsSetter(items => {
+      const updated = [...items];
+      updated.splice(index, 1, item);
+      return updated;
+    });
+  };
+
+  const addItemToDay = itemsSetter => () => {
+    itemsSetter(items => [...items, '']);
   };
 
   const allDayItems = [...mondayItems, ...tuesdayItems, ...wednesdayItems, ...thursdayItems, ...fridayItems, ...saturdayItems, ...sundayItems];
@@ -30,7 +38,7 @@ const useHome = () => {
     labels: labels,
     datasets: [
       {
-        label: 'My First dataset',
+        label: 'Workout Plan',
         backgroundColor: [
           'rgb(255, 99, 132)',
           'rgb(54, 162, 235)',
@@ -46,19 +54,58 @@ const useHome = () => {
     ]
   };
 
-  const chartConfig = {
+  const pieChartConfig = {
     type: 'doughnut',
     data: data,
     options: {}
   };
 
-  const makeChart = () => {
-    const itemsChart = new Chart(document.getElementById('chart'), chartConfig);
+  const barChartConfig = {
+    type: 'bar',
+    data: data,
+    options: {}
+  };
+
+  const lineChartConfig = {
+    type: 'line',
+    data: data,
+    options: {}
+  };
+
+  const generateChart = () => {
+    new Chart(document.getElementById('pie-chart'), pieChartConfig);
+    new Chart(document.getElementById('bar-chart'), barChartConfig);
+    new Chart(document.getElementById('another-chart'), lineChartConfig);
+  };
+
+  const exportWorkout = () => {
+    const downloadElement = document.createElement('a');
+    var dataBlob = new Blob(
+      [
+        JSON.stringify({
+          monday: mondayItems,
+          tuesday: tuesdayItems,
+          wednesday: wednesdayItems,
+          thursday: thursdayItems,
+          friday: fridayItems,
+          saturday: saturdayItems,
+          sunday: sundayItems
+        })
+      ],
+      {
+        type: 'application/json'
+      }
+    );
+    downloadElement.href = window.URL.createObjectURL(dataBlob);
+    downloadElement.download = 'Workout Plan';
+    downloadElement.click();
   };
 
   return {
-    makeChart,
+    exportWorkout,
+    generateChart,
     addItemToDay,
+    editItemOnDay,
     mondayItems,
     tuesdayItems,
     wednesdayItems,

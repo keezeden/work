@@ -4,7 +4,9 @@ import { useHome } from './hook';
 
 const Home = () => {
   const {
-    makeChart,
+    exportWorkout,
+    generateChart,
+    editItemOnDay,
     addItemToDay,
     mondayItems,
     tuesdayItems,
@@ -23,23 +25,39 @@ const Home = () => {
   } = useHome();
 
   return (
-    <div className="w-screen h-screen bg-gray-200 py-6 px-10">
+    <div className="w-screen h-screen bg-gray-100 py-6 px-10">
       <div className="flex flex-row mb-12">
         <div className="w-full flex flex-row">
-          <Column header="monday" items={mondayItems} onAdd={addItemToDay(setMondayItems)} />
-          <Column header="tuesday" items={tuesdayItems} onAdd={addItemToDay(setTuesdayItems)} />
-          <Column header="wednesday" items={wednesdayItems} onAdd={addItemToDay(setWednesdayItems)} />
-          <Column header="thursday" items={thursdayItems} onAdd={addItemToDay(setThursdayItems)} />
-          <Column header="friday" items={fridayItems} onAdd={addItemToDay(setFridayItems)} />
-          <Column header="saturday" items={saturdayItems} onAdd={addItemToDay(setSaturdayItems)} />
-          <Column header="sunday" items={sundayItems} onAdd={addItemToDay(setSundayItems)} />
+          <Column header="monday" items={mondayItems} editItem={editItemOnDay(setMondayItems)} addItem={addItemToDay(setMondayItems)} />
+          <Column header="tuesday" items={tuesdayItems} editItem={editItemOnDay(setTuesdayItems)} addItem={addItemToDay(setTuesdayItems)} />
+          <Column header="wednesday" items={wednesdayItems} editItem={editItemOnDay(setWednesdayItems)} addItem={addItemToDay(setWednesdayItems)} />
+          <Column header="thursday" items={thursdayItems} editItem={editItemOnDay(setThursdayItems)} addItem={addItemToDay(setThursdayItems)} />
+          <Column header="friday" items={fridayItems} editItem={editItemOnDay(setFridayItems)} addItem={addItemToDay(setFridayItems)} />
+          <Column header="saturday" items={saturdayItems} editItem={editItemOnDay(setSaturdayItems)} addItem={addItemToDay(setSaturdayItems)} />
+          <Column header="sunday" items={sundayItems} editItem={editItemOnDay(setSundayItems)} addItem={addItemToDay(setSundayItems)} />
         </div>
-        <button className="font-bold text-lg bg-orange-400 rounded-lg px-4 py-3 absolute bottom-0 right-0 m-8 focus:outline-none" onClick={makeChart}>
-          Generate
-        </button>
+        <div className="flex absolute bottom-0 right-0 m-8 space-x-2">
+          <button
+            className="font-bold text-lg border-2 border-orange-400 text-orange-400 uppercase rounded-lg px-4 py-3 focus:outline-none"
+            onClick={exportWorkout}
+          >
+            Export
+          </button>
+          <button className="font-bold text-lg bg-orange-400 text-white uppercase rounded-lg px-4 py-3 focus:outline-none" onClick={generateChart}>
+            Generate
+          </button>
+        </div>
       </div>
-      <div className="w-1/3 bg-white rounded-lg px-4 py-2">
-        <canvas id="chart"></canvas>
+      <div className="flex w-full space-x-2">
+        <div className="w-1/3 bg-white rounded-lg px-4 py-2">
+          <canvas id="pie-chart"></canvas>
+        </div>
+        <div className="w-1/3 bg-white rounded-lg px-4 py-2">
+          <canvas id="bar-chart"></canvas>
+        </div>
+        <div className="w-1/3 bg-white rounded-lg px-4 py-2">
+          <canvas id="another-chart"></canvas>
+        </div>
       </div>
     </div>
   );
