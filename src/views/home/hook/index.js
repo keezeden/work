@@ -75,7 +75,7 @@ const useHome = () => {
   const generateChart = () => {
     new Chart(document.getElementById('pie-chart'), pieChartConfig);
     new Chart(document.getElementById('bar-chart'), barChartConfig);
-    new Chart(document.getElementById('another-chart'), lineChartConfig);
+    new Chart(document.getElementById('line-chart'), lineChartConfig);
   };
 
   const exportWorkout = () => {
@@ -101,7 +101,34 @@ const useHome = () => {
     downloadElement.click();
   };
 
+  const importWorkout = () => {
+    const inputElement = document.createElement('input');
+    inputElement.type = 'file';
+
+    inputElement.onchange = e => {
+      const file = e.target.files[0];
+
+      const reader = new FileReader();
+      reader.readAsText(file, 'UTF-8');
+
+      reader.onload = readerEvent => {
+        const content = readerEvent.target.result;
+        const { monday, tuesday, wednesday, thursday, friday, saturday, sunday } = JSON.parse(content);
+        setMondayItems(monday);
+        setTuesdayItems(tuesday);
+        setWednesdayItems(wednesday);
+        setThursdayItems(thursday);
+        setFridayItems(friday);
+        setSaturdayItems(saturday);
+        setSundayItems(sunday);
+      };
+    };
+
+    inputElement.click();
+  };
+
   return {
+    importWorkout,
     exportWorkout,
     generateChart,
     addItemToDay,

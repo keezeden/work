@@ -4,6 +4,7 @@ import { useHome } from './hook';
 
 const Home = () => {
   const {
+    importWorkout,
     exportWorkout,
     generateChart,
     editItemOnDay,
@@ -25,7 +26,7 @@ const Home = () => {
   } = useHome();
 
   return (
-    <div className="w-screen h-screen bg-gray-100 py-6 px-10">
+    <div className="w-full h-full bg-gray-100 py-6 px-10">
       <div className="flex flex-row mb-12">
         <div className="w-full flex flex-row">
           <Column header="monday" items={mondayItems} editItem={editItemOnDay(setMondayItems)} addItem={addItemToDay(setMondayItems)} />
@@ -36,12 +37,18 @@ const Home = () => {
           <Column header="saturday" items={saturdayItems} editItem={editItemOnDay(setSaturdayItems)} addItem={addItemToDay(setSaturdayItems)} />
           <Column header="sunday" items={sundayItems} editItem={editItemOnDay(setSundayItems)} addItem={addItemToDay(setSundayItems)} />
         </div>
-        <div className="flex absolute bottom-0 right-0 m-8 space-x-2">
+        <div className="flex fixed bottom-0 right-0 m-8 space-x-2 p-2 rounded-lg bg-white">
           <button
             className="font-bold text-lg border-2 border-orange-400 text-orange-400 uppercase rounded-lg px-4 py-3 focus:outline-none"
             onClick={exportWorkout}
           >
             Export
+          </button>
+          <button
+            className="font-bold text-lg border-2 border-orange-400 text-orange-400 uppercase rounded-lg px-4 py-3 focus:outline-none"
+            onClick={importWorkout}
+          >
+            Import
           </button>
           <button className="font-bold text-lg bg-orange-400 text-white uppercase rounded-lg px-4 py-3 focus:outline-none" onClick={generateChart}>
             Generate
@@ -49,14 +56,14 @@ const Home = () => {
         </div>
       </div>
       <div className="flex w-full space-x-2">
-        <div className="w-1/3 bg-white rounded-lg px-4 py-2">
+        <div className="w-1/3 bg-white rounded-lg px-4 py-2 flex justify-content items-center">
           <canvas id="pie-chart"></canvas>
         </div>
-        <div className="w-1/3 bg-white rounded-lg px-4 py-2">
+        <div className="w-1/3 bg-white rounded-lg px-4 py-2 flex justify-content items-center">
           <canvas id="bar-chart"></canvas>
         </div>
-        <div className="w-1/3 bg-white rounded-lg px-4 py-2">
-          <canvas id="another-chart"></canvas>
+        <div className="w-1/3 bg-white rounded-lg px-4 py-2 flex justify-content items-center">
+          <canvas id="line-chart"></canvas>
         </div>
       </div>
     </div>
