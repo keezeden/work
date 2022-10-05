@@ -1,5 +1,6 @@
 import React from 'react';
 import { Column } from '../../components/column';
+import { Search } from '../../components/search';
 import { useHome } from './hook';
 
 const Home = () => {

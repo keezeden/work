@@ -21,15 +21,22 @@ const useHome = () => {
   };
 
   const addItemToDay = itemsSetter => () => {
-    itemsSetter(items => [...items, '']);
+    itemsSetter(items => [...items, null]);
   };
 
-  const allDayItems = [...mondayItems, ...tuesdayItems, ...wednesdayItems, ...thursdayItems, ...fridayItems, ...saturdayItems, ...sundayItems];
+  const allDayItems = [...mondayItems, ...tuesdayItems, ...wednesdayItems, ...thursdayItems, ...fridayItems, ...saturdayItems, ...sundayItems].filter(
+    item => !!item
+  );
 
-  const labelsSet = [...new Set(allDayItems)];
+  const labelsSet = [...allDayItems].map(item => item?.name);
 
-  const labelMap = labelsSet.reduce((acc, curr) => ((acc[curr] = 0), acc), {});
-  allDayItems.forEach(item => labelMap[item]++);
+  const labelMap = {};
+  labelsSet.map(item => {
+    if (!item) return;
+    labelMap[item] = 0;
+  });
+
+  allDayItems.forEach(item => labelMap[item.name]++);
 
   const labels = Object.keys(labelMap);
   const itemData = Object.values(labelMap);

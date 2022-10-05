@@ -1,13 +1,18 @@
 import React from 'react';
+import { Search } from '../search';
 
 const Cell = ({ item, index, editItem }) => {
   return (
-    <input
-      className="w-full py-3 px-4 my-1 rounded-lg bg-white focus:outline-none"
-      type="text"
-      value={item}
-      onChange={e => editItem(e.currentTarget.value, index)}
-    />
+    <div>
+      {!item ? (
+        <Search onClick={result => editItem(result, index)} />
+      ) : (
+        <div className="w-64 py-3 px-4 my-1 rounded-lg bg-white focus:outline-none">
+          <p className="font-bold">{item.name}</p>
+          <p className="text-gray-500">{item.category.name}</p>
+        </div>
+      )}
+    </div>
   );
 };
 
