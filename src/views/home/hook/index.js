@@ -1,5 +1,7 @@
 import { Chart, registerables } from 'chart.js';
 import { useEffect, useState } from 'react';
+import { generateExerciseData } from '../../../utilities/exercise';
+import { generateMuscleData } from '../../../utilities/muscle';
 
 Chart.register(...registerables);
 
@@ -28,21 +30,11 @@ const useHome = () => {
     item => !!item
   );
 
-  const labelsSet = [...allDayItems].map(item => item?.name);
+  const { labels: exerciseLabels, data: exerciseData } = generateExerciseData(allDayItems);
+  const { labels: muscleLabels, data: muscleData } = generateMuscleData(allDayItems);
 
-  const labelMap = {};
-  labelsSet.map(item => {
-    if (!item) return;
-    labelMap[item] = 0;
-  });
-
-  allDayItems.forEach(item => labelMap[item.name]++);
-
-  const labels = Object.keys(labelMap);
-  const itemData = Object.values(labelMap);
-
-  const data = {
-    labels: labels,
+  const exerciseChartData = {
+    labels: exerciseLabels,
     datasets: [
       {
         label: 'Workout Plan',
@@ -56,26 +48,46 @@ const useHome = () => {
           'rgb(135, 95, 15)',
           'rgb(235, 192, 232)'
         ],
-        data: itemData
+        data: exerciseData
+      }
+    ]
+  };
+
+  const muscleChartData = {
+    labels: muscleLabels,
+    datasets: [
+      {
+        label: 'Workout Plan',
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)',
+          'rgb(65, 3, 252)',
+          'rgb(242, 61, 206)',
+          'rgb(20, 201, 20)',
+          'rgb(135, 95, 15)',
+          'rgb(235, 192, 232)'
+        ],
+        data: muscleData
       }
     ]
   };
 
   const pieChartConfig = {
     type: 'doughnut',
-    data: data,
+    data: exerciseChartData,
     options: {}
   };
 
   const barChartConfig = {
     type: 'bar',
-    data: data,
+    data: muscleChartData,
     options: {}
   };
 
   const lineChartConfig = {
     type: 'line',
-    data: data,
+    data: exerciseChartData,
     options: {}
   };
 
