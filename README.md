@@ -1,7 +1,8 @@
-# App Template
+# Work
 
-A PWA template for building and deploying app ideas as quickly as possible.
+A workout routine analyzer for visualizing and planning
 
 # Todo
 
-Add [bubblewrap](https://github.com/GoogleChromeLabs/bubblewrap) to generate native applications, that can then be monetized
+- Intensity charts from reps
+- Goal indications (strength vs hypertrophy) per muscle group

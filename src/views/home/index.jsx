@@ -5,6 +5,7 @@ import { useHome } from './hook';
 
 const Home = () => {
   const {
+    inadequateRestDays,
     importWorkout,
     exportWorkout,
     generateChart,
@@ -27,7 +28,7 @@ const Home = () => {
   } = useHome();
 
   return (
-    <div className="w-full h-full bg-gray-100 py-6 px-10">
+    <div className="w-full h-screen bg-gray-100 py-6 px-10 overflow-y-scroll">
       <div className="flex flex-row mb-12">
         <div className="w-full flex flex-row">
           <Column header="monday" items={mondayItems} editItem={editItemOnDay(setMondayItems)} addItem={addItemToDay(setMondayItems)} />
@@ -63,8 +64,13 @@ const Home = () => {
         <div className="w-1/3 bg-white rounded-lg px-4 py-2 flex justify-content items-center">
           <canvas id="bar-chart"></canvas>
         </div>
-        <div className="w-1/3 bg-white rounded-lg px-4 py-2 flex justify-content items-center">
-          <canvas id="line-chart"></canvas>
+        <div className="w-1/3 bg-white rounded-lg px-4 py-2 grid grid-cols-2 grid-rows-6 gap-4">
+          {inadequateRestDays.map(([day, exercises]) => (
+            <div className="w-full min-h-20 py-3 px-4 rounded-lg bg-orange-400 focus:outline-none flex flex-col">
+              <p className="font-bold text-white capitalize">{day}</p>
+              <p className="text-white capitalize">Inadequate rest: {exercises.join(', ')}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>

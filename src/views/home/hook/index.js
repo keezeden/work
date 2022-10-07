@@ -1,7 +1,8 @@
 import { Chart, registerables } from 'chart.js';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { generateExerciseData } from '../../../utilities/exercise';
 import { generateMuscleData } from '../../../utilities/muscle';
+import { generateRestData } from '../../../utilities/rest';
 
 Chart.register(...registerables);
 
@@ -26,18 +27,18 @@ const useHome = () => {
     itemsSetter(items => [...items, null]);
   };
 
-  const allDayItems = [...mondayItems, ...tuesdayItems, ...wednesdayItems, ...thursdayItems, ...fridayItems, ...saturdayItems, ...sundayItems].filter(
-    item => !!item
-  );
+  const allDays = [mondayItems, tuesdayItems, wednesdayItems, thursdayItems, fridayItems, saturdayItems, sundayItems];
+  const allDayItems = allDays.flat().filter(item => !!item);
 
   const { labels: exerciseLabels, data: exerciseData } = generateExerciseData(allDayItems);
   const { labels: muscleLabels, data: muscleData } = generateMuscleData(allDayItems);
+  const { problemDays: inadequateRestDays } = generateRestData(allDays);
 
   const exerciseChartData = {
     labels: exerciseLabels,
     datasets: [
       {
-        label: 'Workout Plan',
+        label: 'Exercise Distributions',
         backgroundColor: [
           'rgb(255, 99, 132)',
           'rgb(54, 162, 235)',
@@ -57,7 +58,7 @@ const useHome = () => {
     labels: muscleLabels,
     datasets: [
       {
-        label: 'Workout Plan',
+        label: 'Muscle Distributions',
         backgroundColor: [
           'rgb(255, 99, 132)',
           'rgb(54, 162, 235)',
@@ -73,6 +74,26 @@ const useHome = () => {
     ]
   };
 
+  // const restChartData = {
+  //   labels: restLabels,
+  //   datasets: [
+  //     {
+  //       label: 'Inadequate Rest Periods',
+  //       backgroundColor: [
+  //         'rgb(255, 99, 132)',
+  //         'rgb(54, 162, 235)',
+  //         'rgb(255, 205, 86)',
+  //         'rgb(65, 3, 252)',
+  //         'rgb(242, 61, 206)',
+  //         'rgb(20, 201, 20)',
+  //         'rgb(135, 95, 15)',
+  //         'rgb(235, 192, 232)'
+  //       ],
+  //       data: restData
+  //     }
+  //   ]
+  // };
+
   const pieChartConfig = {
     type: 'doughnut',
     data: exerciseChartData,
@@ -85,16 +106,16 @@ const useHome = () => {
     options: {}
   };
 
-  const lineChartConfig = {
-    type: 'line',
-    data: exerciseChartData,
-    options: {}
-  };
+  // const lineChartConfig = {
+  //   type: 'line',
+  //   data: restChartData,
+  //   options: {}
+  // };
 
   const generateChart = () => {
     new Chart(document.getElementById('pie-chart'), pieChartConfig);
     new Chart(document.getElementById('bar-chart'), barChartConfig);
-    new Chart(document.getElementById('line-chart'), lineChartConfig);
+    // new Chart(document.getElementById('line-chart'), lineChartConfig);
   };
 
   const exportWorkout = () => {
@@ -147,6 +168,7 @@ const useHome = () => {
   };
 
   return {
+    inadequateRestDays,
     importWorkout,
     exportWorkout,
     generateChart,
